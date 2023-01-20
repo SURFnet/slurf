@@ -20,7 +20,7 @@ thirty characters.{% endtrans %}</p>
         <div class="message-box message-box-error">{% trans %}The chosen account name is already taken. Please choose another one.{% endtrans %}</div>
     {% endif %}
 
-    <div class="pure-control-group"><input type="text" size="40" maxlength="30" pttern="/^[a-zA-Z0-9_]+$/" minlength="2" class="edge" required name="nickname" placeholder="Your Mastodon account name" autofocus value="{{ desiredNick }}"></div>
+    <div class="pure-control-group"><input type="text" size="40" maxlength="30" pattern="/^[a-zA-Z0-9_]+$/" minlength="2" class="edge" required name="nickname" placeholder="Your Mastodon account name" autofocus value="{{ desiredNick }}"></div>
 
     <p><input type="submit" name="proceed" id="proceedbutton" class="pure-button pure-button-red"
         value="{% trans %}Proceed{% endtrans %}"></p>

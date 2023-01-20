@@ -48,7 +48,7 @@ class NicknameChooser
 
     private function validNickname(string $nickname): bool
     {
-        return preg_match('/^[a-z0-9_]{2,30}+$/i', $nickname) === 1;
+        return preg_match('/^[a-z0-9_]{2,30}$/i', $nickname) === 1;
     }
 
     private function nickExists(string $nickname): bool
