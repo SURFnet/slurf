@@ -1,0 +1,3 @@
+slurf-pickname:
+  path: /nickname
+  defaults: { _controller: 'SimpleSAML\Module\slurf\Controller\NicknameChooser::main' }

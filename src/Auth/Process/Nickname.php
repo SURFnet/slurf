@@ -57,7 +57,11 @@ class Nickname extends Auth\ProcessingFilter
 
             return;
         }
+
+        $state['slurf_tablename'] = $this->tablename;
+        $state['slurf_nicknameattribute'] = $this->nicknameattribute;
         $id = Auth\State::saveState($state, 'slurf:nicknamechooser');
+
         $url = Module::getModuleURL('slurf/nickname');
         $httpUtils = new Utils\HTTP();
         $httpUtils->redirectTrustedURL($url, ['StateId' => $id]);

@@ -1,0 +1,30 @@
+{% extends "base.twig" %}
+
+{% block content %}
+
+<h1>{% trans %}Welcome to Mastodon{% endtrans %}
+<h2>{% trans %}Please choose your public account name{% endtrans %}</h2>
+
+<p>{% trans %}The account name is your public identity on the Mastodon platform
+and may contain letters, numbers and unsderscores. It may not be longer than
+thirty characters.{% endtrans %}</p>
+
+<form action="{{ target }}" method="post" class="pure-form">
+    {% for name, value in data -%}
+    <input type="hidden" name="{{ name }}" value="{{ value }}">
+    {%- endfor %}
+
+    {% if invalidNickname %}
+        <div class="message-box message-box-error">{% trans %}This is not a valid account name. The nickname can contain letters, numbers and underscores and may not be longer than thirty characters.{% endtrans %}</div>
+    {% elseif nickExists is defined and nickExists %}
+        <div class="message-box message-box-error">{% trans %}The chosen account name is already taken. Please choose another one.{% endtrans %}</div>
+    {% endif %}
+
+    <div class="pure-control-group"><input type="text" size="40" maxlength="30" pttern="/^[a-zA-Z0-9_]+$/" minlength="2" class="edge" required name="nickname" placeholder="Your Mastodon account name" autofocus value="{{ desiredNick }}"></div>
+
+    <p><input type="submit" name="proceed" id="proceedbutton" class="pure-button pure-button-red"
+        value="{% trans %}Proceed{% endtrans %}"></p>
+
+</form>
+{% endblock %}
+
