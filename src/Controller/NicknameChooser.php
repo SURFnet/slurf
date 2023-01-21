@@ -57,7 +57,7 @@ class NicknameChooser
         Logger::info(sprintf("Checking for desired nickname existance: %s", $nickname));
 	// todo: is this SST or do we also need to query other sources/mastodon
         $query = $db->read(
-                    "SELECT count(*) AS cnt FROM " . $this->tablename . " WHERE nickname = :nickname",
+                    "SELECT count(*) AS cnt FROM " . $this->tablename . " WHERE lower(nickname) = lower(:nickname)",
                     ['nickname' => $nickname]
                 );
         $query->execute();
