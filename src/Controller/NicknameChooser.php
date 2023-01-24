@@ -86,7 +86,7 @@ class NicknameChooser
         if ($id === null) {
             throw new Error\BadRequest('Missing required StateId query parameter.');
         }
-        $state = $this->authState::loadState($id, 'slurf:nicknamechooser');
+        $state = $this->authState::loadState($id, 'slurf:nicknamepicker');
 
         if (is_null($state)) {
             throw new Error\NoState();
@@ -134,7 +134,7 @@ class NicknameChooser
         if ($id === null) {
             throw new Error\BadRequest('Missing required StateId query parameter.');
         }
-        $state = $this->authState::loadState($id, 'slurf:nicknamechooser');
+        $state = $this->authState::loadState($id, 'slurf:accountchooser');
 
         if (is_null($state)) {
             throw new Error\NoState();

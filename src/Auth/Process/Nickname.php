@@ -92,11 +92,12 @@ class Nickname extends Auth\ProcessingFilter
         if(count($allnicks) > 1) {
             $target = 'slurf/chooser';
             $state['slurf_nickchoices'] = $allnicks;
+            $id = Auth\State::saveState($state, 'slurf:accountchooser');
         } else {
             $target = 'slurf/nickname';
+            $id = Auth\State::saveState($state, 'slurf:nicknamepicker');
         }
 
-        $id = Auth\State::saveState($state, 'slurf:nicknamechooser');
         $url = Module::getModuleURL($target);
         $httpUtils = new Utils\HTTP();
         $httpUtils->redirectTrustedURL($url, ['StateId' => $id]);
