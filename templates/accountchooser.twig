@@ -1,0 +1,25 @@
+{% extends "base.twig" %}
+
+{% block content %}
+
+<h1>{% trans %}Select an account to continue{% endtrans %}
+
+<p>{% trans %}Which account do you want to log into Mastodon with?{% endtrans %}</p>
+
+
+<form action="{{ target }}" method="post" class="pure-form">
+    {% for name, value in data -%}
+    <input type="hidden" name="{{ name }}" value="{{ value }}">
+    {%- endfor %}
+
+    {% for nickname in choices %}
+        <div class="pure-g">
+        <div class="pure-u-1-8">
+             <button type="submit" class="pure-button" name="proceed" value="{{nickname}}">{{ nickname }}</button>
+        </div>
+        </div>
+    {% endfor %}
+
+</form>
+{% endblock %}
+

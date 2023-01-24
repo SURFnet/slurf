@@ -53,7 +53,7 @@ class NicknameChooser
     {
         $db = \SimpleSAML\Database::getInstance();
         Logger::info(sprintf("Checking for desired nickname existance: %s", $nickname));
-	// todo: is this SST or do we also need to query other sources/mastodon
+        // todo: is this SST or do we also need to query other sources/mastodon
         $query = $db->read(
                     "SELECT count(*) AS cnt FROM " . Slurf::DB_TABLE . " WHERE lower(nickname) = lower(:nickname)",
                     ['nickname' => $nickname]
@@ -70,17 +70,15 @@ class NicknameChooser
         $db = \SimpleSAML\Database::getInstance();
         Logger::info(sprintf("Registering user %s from %s: nickname %s", $nameId, $homeOrg, $nickname));
         $db->write(
-            "INSERT INTO " . Slurf::DB_TABLE . " (nickname, saml_id, homeorg) " .
-	    " VALUES (:nickname, :nameId, :homeOrg)",
-            [
-		    'nickname' => $nickname,
-		    'nameId' => $nameId,
-		    'homeOrg' => $homeOrg,
-	    ]
-                );
+            "INSERT INTO " . Slurf::DB_TABLE . " (nickname, saml_id, homeorg, idtype) " .
+            " VALUES (:nickname, :nameId, :homeOrg, 'person')", [
+                'nickname' => $nickname,
+                'nameId' => $nameId,
+                'homeOrg' => $homeOrg,
+            ]);
     }
 
-    public function main(Request $request): Response
+    public function nicknamePicker(Request $request): Response
     {
         Logger::info('Nickname chooser - showing form to user');
 
@@ -92,7 +90,9 @@ class NicknameChooser
 
         if (is_null($state)) {
             throw new Error\NoState();
-        } elseif ($request->get('proceed', null) !== null) {
+        }
+
+        if ($request->get('proceed', null) !== null) {
             $desiredNick = $request->get('nickname');
 
             if(!$this->validNickname($desiredNick)) {
@@ -110,14 +110,14 @@ class NicknameChooser
                     Logger::info('Nickname chooser - new nickname registered, continue');
                     $state['Attributes'][Slurf::TARGET_ATTRIBUTE] = [$desiredNick];
 
-		    Auth\ProcessingChain::resumeProcessing($state);
+                    Auth\ProcessingChain::resumeProcessing($state);
                 }
 
                 Logger::info('Nickname chooser - nickname already exists');
             }
         }
 
-        $t = new Template($this->config, 'slurf:nicknamechooser.twig');
+        $t = new Template($this->config, 'slurf:nicknamepicker.twig');
         $t->data['target'] = Module::getModuleURL('slurf/nickname');
         $t->data['data'] = ['StateId' => $id];
         $t->data['desiredNick'] = $desiredNick ?? '';
@@ -126,5 +126,41 @@ class NicknameChooser
         return $t;
     }
 
+    public function accountChooser(Request $request): Response
+    {
+        Logger::info('Account chooser - start');
+
+        $id = $request->get('StateId', null);
+        if ($id === null) {
+            throw new Error\BadRequest('Missing required StateId query parameter.');
+        }
+        $state = $this->authState::loadState($id, 'slurf:nicknamechooser');
+
+        if (is_null($state)) {
+            throw new Error\NoState();
+        }
+
+        $proceed = $request->get('proceed', null);
+        if ($proceed !== null) {
+            Logger::info('Nickname chooser - nickname selected');
+            if(!in_array($proceed, $state['slurf_nickchoices'], true)) {
+                    throw new Error\Exception("Chosen nick is not one of your nicks");
+            }
+
+            Logger::info('Nickname chooser - chosen nickname owned by user, continue to Mastodon');
+            // Only send the nickname on, not (user's personal) attributes
+            $state['Attributes'] = [Slurf::TARGET_ATTRIBUTE => [$proceed]];
+
+            Auth\ProcessingChain::resumeProcessing($state);
+        }
+
+        Logger::info('Account chooser - showing form to user');
+
+        $t = new Template($this->config, 'slurf:accountchooser.twig');
+        $t->data['target'] = Module::getModuleURL('slurf/chooser');
+        $t->data['data'] = ['StateId' => $id];
+        $t->data['choices'] = $state['slurf_nickchoices'];
+        return $t;
+    }
 
 }
