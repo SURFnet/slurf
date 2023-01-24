@@ -11,6 +11,7 @@ use SimpleSAML\Configuration;
 use SimpleSAML\HTTP\RunnableResponse;
 use SimpleSAML\Logger;
 use SimpleSAML\Module;
+use SimpleSAML\Module\slurf\Slurf;
 use SimpleSAML\Session;
 use SimpleSAML\XHTML\Template;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,9 +26,6 @@ class NicknameChooser
     /** @var \SimpleSAML\Session */
     protected Session $session;
     
-    protected string $tablename;
-    protected string $nicknameattribute;
-
     /**
      * @var \SimpleSAML\Auth\State|string
      */
@@ -57,7 +55,7 @@ class NicknameChooser
         Logger::info(sprintf("Checking for desired nickname existance: %s", $nickname));
 	// todo: is this SST or do we also need to query other sources/mastodon
         $query = $db->read(
-                    "SELECT count(*) AS cnt FROM " . $this->tablename . " WHERE lower(nickname) = lower(:nickname)",
+                    "SELECT count(*) AS cnt FROM " . Slurf::DB_TABLE . " WHERE lower(nickname) = lower(:nickname)",
                     ['nickname' => $nickname]
                 );
         $query->execute();
@@ -72,7 +70,7 @@ class NicknameChooser
         $db = \SimpleSAML\Database::getInstance();
         Logger::info(sprintf("Registering user %s from %s: nickname %s", $nameId, $homeOrg, $nickname));
         $db->write(
-            "INSERT INTO " . $this->tablename . " (nickname, saml_id, homeorg) " .
+            "INSERT INTO " . Slurf::DB_TABLE . " (nickname, saml_id, homeorg) " .
 	    " VALUES (:nickname, :nameId, :homeOrg)",
             [
 		    'nickname' => $nickname,
@@ -91,8 +89,6 @@ class NicknameChooser
             throw new Error\BadRequest('Missing required StateId query parameter.');
         }
         $state = $this->authState::loadState($id, 'slurf:nicknamechooser');
-	$this->tablename = $state['slurf_tablename'];
-	$this->nicknameattribute = $state['slurf_nicknameattribute'];
 
         if (is_null($state)) {
             throw new Error\NoState();
@@ -108,11 +104,11 @@ class NicknameChooser
 
                 if ($nickExists === false) {
                     $nameId = $state['saml:sp:NameID']->getValue();
-                    $homeOrg = $state['Attributes']['urn:mace:terena.org:attribute-def:schacHomeOrganization'][0];
+                    $homeOrg = $state['Attributes'][Slurf::USER_ORG_ATTRIBUTE][0];
                     $this->registerNick($desiredNick, $nameId, $homeOrg);
 
                     Logger::info('Nickname chooser - new nickname registered, continue');
-                    $state['Attributes'][$this->nicknameattribute] = [$desiredNick];
+                    $state['Attributes'][Slurf::TARGET_ATTRIBUTE] = [$desiredNick];
 
 		    Auth\ProcessingChain::resumeProcessing($state);
                 }
