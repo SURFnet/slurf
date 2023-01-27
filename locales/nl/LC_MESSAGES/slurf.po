@@ -25,8 +25,11 @@ msgstr "Welkom bij Mastodon"
 msgid "Please choose your public account name"
 msgstr "Kies een naam voor je account"
 
-msgid "The account name is your public identity on the Mastodon platform and may contain letters, numbers and unsderscores. It may not be longer than thirty characters."
-msgstr "De accountnaam is je publieke identiteit op het Mastodon-platform en bestaat uit letters, cijfers en underscores. Hij mag niet langer zijn dan dertig tekens."
+msgid "To register with Mastodon you need to pick an account name. The account name is your public identity on the Mastodon platform and may contain letters, numbers and unsderscores. It may not be longer than thirty characters."
+msgstr "Om je aan te melden voor Mastodon moet je een accountnaam kiezen. De accountnaam is je publieke identiteit op het Mastodon-platform en bestaat uit letters, cijfers en underscores. Hij mag niet langer zijn dan dertig tekens."
+
+msgid "The account name can not be changed afterwards."
+msgstr "De accountnaam kan niet later nog gewijzigd worden."
 
 msgid "Your Mastodon account name"
 msgstr "Je Mastodon-accountnaam"
@@ -39,3 +42,5 @@ msgstr "De gekozen naam is al in gebruik. Kies een andere."
 
 msgid "This is not a valid account name. The nickname can contain letters, numbers and underscores and may not be longer than thirty characters."
 msgstr "Dit is geen geldige accountnaam. De naam mag letters, cijfers en underscores bevatten en niet langer zijn dan dertig tekens."
+
+
