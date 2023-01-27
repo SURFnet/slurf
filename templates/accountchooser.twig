@@ -1,8 +1,11 @@
+{% set pagetitle = 'Select an account to continue'|trans %}
+
 {% extends "base.twig" %}
 
 {% block content %}
 
-<h1>{% trans %}Select an account to continue{% endtrans %}</h1>
+<div class="item">
+<h1>{{ pagetitle }}</h1>
 
 <p>{% trans %}Which account do you want to log into Mastodon with?{% endtrans %}</p>
 
@@ -18,5 +21,6 @@
     {% endfor %}
 
 </form>
+</div>
 {% endblock %}
 

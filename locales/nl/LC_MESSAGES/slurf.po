@@ -1,0 +1,41 @@
+
+msgid ""
+msgstr ""
+"Project-Id-Version: SimpleSAMLphp-module-SLURF\n"
+"Report-Msgid-Bugs-To: thijs.kinkhorst@surf.nl\n"
+"POT-Creation-Date: 2023-01-27 11:17+0100\n"
+"PO-Revision-Date: 2023-01-27 11:17+0100\n"
+"Last-Translator: \n"
+"Language: nl\n"
+"Language-Team: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Select an account to continue"
+msgstr "Kies een account om verder te gaan"
+
+msgid "Which account do you want to log into Mastodon with?"
+msgstr "Met welk account wil je op Mastodon inloggen?"
+
+msgid "Welcome to Mastodon"
+msgstr "Welkom bij Mastodon"
+
+msgid "Please choose your public account name"
+msgstr "Kies een naam voor je account"
+
+msgid "The account name is your public identity on the Mastodon platform and may contain letters, numbers and unsderscores. It may not be longer than thirty characters."
+msgstr "De accountnaam is je publieke identiteit op het Mastodon-platform en bestaat uit letters, cijfers en underscores. Hij mag niet langer zijn dan dertig tekens."
+
+msgid "Your Mastodon account name"
+msgstr "Je Mastodon-accountnaam"
+
+msgid "Proceed"
+msgstr "Verder"
+
+msgid "The chosen account name is already taken. Please choose another one."
+msgstr "De gekozen naam is al in gebruik. Kies een andere."
+
+msgid "This is not a valid account name. The nickname can contain letters, numbers and underscores and may not be longer than thirty characters."
+msgstr "Dit is geen geldige accountnaam. De naam mag letters, cijfers en underscores bevatten en niet langer zijn dan dertig tekens."
