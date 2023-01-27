@@ -2,6 +2,10 @@
 
 {% extends "base.twig" %}
 
+{% block preload %}
+  <script src="{{ asset('slurf.js', 'slurf') }}"></script>
+{% endblock %}
+
 {% block content %}
 
 <div class="item">
@@ -23,11 +27,15 @@
         <div class="message-box message-box-error">{% trans %}The chosen account name is already taken. Please choose another one.{% endtrans %}</div>
     {% endif %}
 
-    <div class="pure-control-group"><input type="text" size="40" maxlength="30" pattern="/^[a-zA-Z0-9_]+$/" minlength="2" class="edge" required name="nickname" placeholder="{% trans %}Your Mastodon account name{% endtrans %}" autofocus value="{{ desiredNick }}"></div>
+    <div class="pure-control-group"><input type="text" oninput="checkAvailability(this.value);" size="40" maxlength="30" pattern="^[a-zA-Z0-9_]+$" minlength="2" class="edge" required name="nickname" placeholder="{% trans %}Your Mastodon account name{% endtrans %}" autofocus value="{{ desiredNick }}"></div>
 
     <p><input type="submit" name="proceed" id="proceedbutton" class="pure-button pure-button-red"
         value="{% trans %}Proceed{% endtrans %}"></p>
 
+    <br><br>
+    <p id="nickname-taken" style="display: none">🚫 {% trans %}This name is already taken.{% endtrans %}</p>
+    <p id="nickname-free" style="display: none">✅ {% trans %}This name is available.{% endtrans %}</p>
+    <p id="nickname-invalid" style="display: none">⚡ {% trans %}This name contains invalid characters.{% endtrans %}</p>
 </form>
 </div>
 {% endblock %}

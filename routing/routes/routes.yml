@@ -1,3 +1,9 @@
 slurf-pickname:
   path: /nickname
-  defaults: { _controller: 'SimpleSAML\Module\slurf\Controller\NicknameChooser::main' }
+  defaults: { _controller: 'SimpleSAML\Module\slurf\Controller\NicknameChooser::nicknamePicker' }
+slurf-pickname-exists:
+  path: /nickname/exists/{nickname}
+  defaults: { _controller: 'SimpleSAML\Module\slurf\Controller\NicknameChooser::nicknameCheckExists' }
+slurf-accountchooser:
+  path: /chooser
+  defaults: { _controller: 'SimpleSAML\Module\slurf\Controller\NicknameChooser::accountChooser' }

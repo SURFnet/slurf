@@ -16,6 +16,7 @@ use SimpleSAML\Session;
 use SimpleSAML\XHTML\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 
 class NicknameChooser
@@ -76,6 +77,18 @@ class NicknameChooser
                 'nameId' => $nameId,
                 'homeOrg' => $homeOrg,
             ]);
+    }
+
+    public function nicknameCheckExists(Request $request, string $nickname): JsonResponse
+    {
+        if(!$this->validNickname($nickname)) {
+            $response = 'invalid';
+        } elseif($this->nickExists($nickname)) {
+            $response = 'taken';
+	} else {
+            $response = 'free';
+        }
+        return new JsonResponse($response);
     }
 
     public function nicknamePicker(Request $request): Response

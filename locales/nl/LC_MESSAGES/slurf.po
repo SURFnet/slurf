@@ -43,4 +43,11 @@ msgstr "De gekozen naam is al in gebruik. Kies een andere."
 msgid "This is not a valid account name. The nickname can contain letters, numbers and underscores and may not be longer than thirty characters."
 msgstr "Dit is geen geldige accountnaam. De naam mag letters, cijfers en underscores bevatten en niet langer zijn dan dertig tekens."
 
+msgid "This name is already taken."
+msgstr "Deze naam is al vergeven."
 
+msgid "This name is available."
+msgstr "Deze naam is nog beschikbaar."
+
+msgid "This name contains invalid characters."
+msgstr "Deze naam bevat niet-toegestane tekens."
