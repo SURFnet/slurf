@@ -14,11 +14,19 @@
     <input type="hidden" name="{{ name }}" value="{{ value }}">
     {%- endfor %}
 
-    {% for nickname in choices %}
-        <p>
-             <button type="submit" class="pure-button" name="proceed" value="{{nickname}}">@{{ nickname }}</button>
-        </p>
+    <center>
+    {% for choice in choices %}
+        <button type="submit" style="float: inherit; padding: 20px; border-radius: 12px; font-size: 150%; display: inline-flex;
+          align-items: center;  width: 90%; height: 60px; background-color: #eee; color: #333; " name="proceed" value="{{choice}}">
+            {% if avatars[choice] is defined %}
+            <img src="{{avatars[choice]}}" alt="" width="40" height="40" style="width: 40px; height: 40px; border-radius: 5px; margin-right: 10px; margin-left: -10px;">
+            {% else %}
+            <span style="width: 40px; height: 40px; margin-left: -10px; margin-right: 10px;"></span>
+            {% endif %}
+            @{{ choice }}
+        </button>
     {% endfor %}
+    </center>
 
 </form>
 </div>

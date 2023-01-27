@@ -66,6 +66,35 @@ class NicknameChooser
         return $result['cnt'] !== 0;
     }
 
+    private function getNicksAvatars(array $nicknames): array
+    {
+        $db = \SimpleSAML\Database::getInstance();
+        Logger::info(sprintf("Fetchting avatar paths for nicknames: [%s]", implode(',', $nicknames)));
+        // SSP DB only supports named params, so we have to juggle a bit to provide those in a variable number
+        $placeholders = ':nick0';
+        $values = ['nick0' => strtolower(array_shift($nicknames))];
+        $i = 0;
+        foreach($nicknames as $value) {
+            ++$i;
+            $placeholders .= ',:nick'.$i;
+            $values['nick'.$i] = strtolower($value);
+        }
+
+        $query = $db->read(
+            "SELECT username, CONCAT('/system/accounts/avatars/', SUBSTRING(id::text, 1, 3), '/',
+             SUBSTRING(id::text, 4, 3), '/',
+             SUBSTRING(id::text, 7, 3), '/',
+             SUBSTRING(id::text, 10, 3),'/',
+             SUBSTRING(id::text, 13, 3),'/',
+             SUBSTRING(id::text, 16, 3),'/original/', avatar_file_name) AS avatar_uri
+             FROM accounts WHERE lower(username) IN ($placeholders)",
+             $values
+                );
+        $query->execute();
+        return $query->fetchAll(PDO::FETCH_KEY_PAIR);
+    }
+
+
     private function registerNick(string $nickname, string $nameId, string $homeOrg): void
     {
         $db = \SimpleSAML\Database::getInstance();
@@ -85,7 +114,7 @@ class NicknameChooser
             $response = 'invalid';
         } elseif($this->nickExists($nickname)) {
             $response = 'taken';
-	} else {
+        } else {
             $response = 'free';
         }
         return new JsonResponse($response);
@@ -168,11 +197,13 @@ class NicknameChooser
         }
 
         Logger::info('Account chooser - showing form to user');
+        $nickswithavas = $this->getNicksAvatars($state['slurf_nickchoices']);
 
         $t = new Template($this->config, 'slurf:accountchooser.twig');
         $t->data['target'] = Module::getModuleURL('slurf/chooser');
         $t->data['data'] = ['StateId' => $id];
         $t->data['choices'] = $state['slurf_nickchoices'];
+        $t->data['avatars'] = $nickswithavas;
         return $t;
     }
 

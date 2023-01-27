@@ -40,7 +40,7 @@ class Nickname extends Auth\ProcessingFilter
 
         // SSP DB only supports named params, so we have to juggle a bit to provide those in a variable number
         $placeholders = ':grp0';
-        $values = ['grp0' => array_unshift($groups)];
+        $values = ['grp0' => array_shift($groups)];
         $i = 0;
         foreach($groups as $value) {
             ++$i;
