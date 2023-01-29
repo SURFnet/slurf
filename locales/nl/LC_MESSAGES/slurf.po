@@ -51,3 +51,6 @@ msgstr "Deze naam is nog beschikbaar."
 
 msgid "This name contains invalid characters."
 msgstr "Deze naam bevat niet-toegestane tekens."
+
+msgid "Register a personal Mastodon account."
+msgstr "Registreer een persoonlijk Mastodon-account."

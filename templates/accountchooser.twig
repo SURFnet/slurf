@@ -28,8 +28,8 @@
     {% endfor %}
     </center>
 
-    {% if personalnick === null %}
-        <p><a href="{{ moduleURL('slurf/nickname', {'AuthState': AuthState}) }}">Register a personal Mastodon account.</a></p>
+    {% if personalnick is null %}
+        <p><a href="{{ moduleURL('slurf/nickname', {'StateId': data.StateId}) }}">{% trans %}Register a personal Mastodon account.{% endtrans %}</a></p>
     {% endif %}
 
 </form>

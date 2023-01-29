@@ -96,6 +96,7 @@ class Nickname extends Auth\ProcessingFilter
         }
 
         $id = Auth\State::saveState($state, 'slurf:nickname');
+        $url = Module::getModuleURL($target);
         $httpUtils = new Utils\HTTP();
         $httpUtils->redirectTrustedURL($url, ['StateId' => $id]);
     }
