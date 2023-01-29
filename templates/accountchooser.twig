@@ -28,6 +28,10 @@
     {% endfor %}
     </center>
 
+    {% if personalnick === null %}
+        <p><a href="{{ moduleURL('slurf/nickname', {'AuthState': AuthState}) }}">Register a personal Mastodon account.</a></p>
+    {% endif %}
+
 </form>
 </div>
 {% endblock %}

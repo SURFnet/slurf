@@ -71,34 +71,31 @@ class Nickname extends Auth\ProcessingFilter
         $nick = $this->userExists($nameId);
         if($nick !== null) {
             Logger::info(sprintf("Found nickname for user %s: %s", $nameId, $nick));
-            $allnicks[] = $nick;
         }
+        $state['slurf_personalnick'] = $nick;
 
         $groupnicks = $this->userGroupsExist($groups);
         if(!empty($groupnicks)) {
             Logger::info(sprintf("Found group nicknames for user %s: [%s]", $nameId, implode(',', $groupnicks)));
-            $allnicks = array_merge($allnicks, $groupnicks);
-            // Unset all other attributes (user's personal info) in case of group nick
-            $attributes = [];
         }
+        $state['slurf_groupnicks'] = $groupnicks;
 
-        // Single nick found? Continue to Mastodon immediately
-        if(count($allnicks) === 1) {
-            $attributes[Slurf::TARGET_ATTRIBUTE] = $allnicks;
-            return;
-        }
+        // No group accounts found
+        if(empty($groupnicks)) {
+            // Only a personal nick found? Continue to Mastodon immediately
+            if($nick !== null) {
+                $attributes[Slurf::TARGET_ATTRIBUTE] = [$nick];
+                return;
+            }
 
-        // More than one nick: send user to account choosser, otherwise go to signup flow.
-        if(count($allnicks) > 1) {
-            $target = 'slurf/chooser';
-            $state['slurf_nickchoices'] = $allnicks;
-            $id = Auth\State::saveState($state, 'slurf:accountchooser');
-        } else {
+            // No personal nick, no group accounts: continue to nickname picker
             $target = 'slurf/nickname';
-            $id = Auth\State::saveState($state, 'slurf:nicknamepicker');
+        } else {
+            // If user has group accounts, always continue to account chooser
+            $target = 'slurf/chooser';
         }
 
-        $url = Module::getModuleURL($target);
+        $id = Auth\State::saveState($state, 'slurf:nickname');
         $httpUtils = new Utils\HTTP();
         $httpUtils->redirectTrustedURL($url, ['StateId' => $id]);
     }

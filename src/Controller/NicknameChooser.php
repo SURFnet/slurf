@@ -17,7 +17,7 @@ use SimpleSAML\XHTML\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
-
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class NicknameChooser
 {
@@ -128,10 +128,14 @@ class NicknameChooser
         if ($id === null) {
             throw new Error\BadRequest('Missing required StateId query parameter.');
         }
-        $state = $this->authState::loadState($id, 'slurf:nicknamepicker');
+        $state = $this->authState::loadState($id, 'slurf:nickname');
 
         if (is_null($state)) {
             throw new Error\NoState();
+        }
+
+        if ($state['slurf_personalnick'] !== null) {
+            throw new AccessDeniedException('You already have a nick registered');
         }
 
         if ($request->get('proceed', null) !== null) {
@@ -176,35 +180,44 @@ class NicknameChooser
         if ($id === null) {
             throw new Error\BadRequest('Missing required StateId query parameter.');
         }
-        $state = $this->authState::loadState($id, 'slurf:accountchooser');
+        $state = $this->authState::loadState($id, 'slurf:nickname');
 
         if (is_null($state)) {
             throw new Error\NoState();
         }
 
+        $nickchoices = $state['slurf_groupnicks'];
+        $personalnick = $state['slurf_personalnick'];
+        if ($personalnick !== null) {
+            $nickchoices[] = $personalnick;
+        }
+
         $proceed = $request->get('proceed', null);
         if ($proceed !== null) {
             Logger::info('Nickname chooser - nickname selected');
-            if(!in_array($proceed, $state['slurf_nickchoices'], true)) {
-                    throw new Error\Exception("Chosen nick is not one of your nicks");
+            if(!in_array($proceed, $nickchoices, true)) {
+                throw new Error\Exception("Chosen nick is not one of your nicks");
             }
 
             Logger::info('Nickname chooser - chosen nickname owned by user, continue to Mastodon');
-            // Only send the nickname on, not (user's personal) attributes
-            $state['Attributes'] = [Slurf::TARGET_ATTRIBUTE => [$proceed]];
+            if($proceed !== $personalnick) {
+                // Only send the nickname on, not (user's personal) attributes for group accounts
+                $state['Attributes'] = [];
+            }
+            $state['Attributes'][Slurf::TARGET_ATTRIBUTE] = [$proceed];
 
             Auth\ProcessingChain::resumeProcessing($state);
         }
 
         Logger::info('Account chooser - showing form to user');
-        $nickswithavas = $this->getNicksAvatars($state['slurf_nickchoices']);
+        $nickswithavas = $this->getNicksAvatars($nickchoices);
 
         $t = new Template($this->config, 'slurf:accountchooser.twig');
         $t->data['target'] = Module::getModuleURL('slurf/chooser');
         $t->data['data'] = ['StateId' => $id];
-        $t->data['choices'] = $state['slurf_nickchoices'];
+        $t->data['choices'] = $nickchoices;
+        $t->data['personalnick'] = $personalnick;
         $t->data['avatars'] = $nickswithavas;
         return $t;
     }
-
 }
