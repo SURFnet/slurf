@@ -58,7 +58,7 @@ class Nickname extends Auth\ProcessingFilter
 
     public function process(array &$state): void
     {
-        Logger::info(sprintf("Starting Nickname authproc filter, target = %s", $this->nicknameattribute));
+        Logger::info(sprintf("Starting Nickname authproc filter, target = %s", Slurf::TARGET_ATTRIBUTE));
 
         $attributes = &$state['Attributes'];
         $nameId = $state['saml:sp:NameID']->getValue();
