@@ -13,8 +13,11 @@ use SimpleSAML\Utils;
 
 class Nickname extends Auth\ProcessingFilter
 {
+    private string $assetsbase = '/system/';
+
     public function __construct(array $config, $reserved)
     {
+        $this->assetsbase = $config['assetsbase'] ?? '/system/';
         parent::__construct($config, $reserved);
     }
 
@@ -75,10 +78,6 @@ class Nickname extends Auth\ProcessingFilter
         $state['slurf_personalnick'] = $nick;
 
         $groupnicks = $this->userGroupsExist($groups);
-        if(!empty($groupnicks)) {
-            Logger::info(sprintf("Found group nicknames for user %s: [%s]", $nameId, implode(',', $groupnicks)));
-        }
-        $state['slurf_groupnicks'] = $groupnicks;
 
         // No group accounts found
         if(empty($groupnicks)) {
@@ -92,6 +91,9 @@ class Nickname extends Auth\ProcessingFilter
             $target = 'slurf/nickname';
         } else {
             // If user has group accounts, always continue to account chooser
+            Logger::info(sprintf("Found group nicknames for user %s: [%s]", $nameId, implode(',', $groupnicks)));
+            $state['slurf_groupnicks'] = $groupnicks;
+            $state['slurf_assetsbase'] = $this->assetsbase;
             $target = 'slurf/chooser';
         }
 

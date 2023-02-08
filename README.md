@@ -28,9 +28,15 @@ of the mastodon instance:
 
 ```php
     'authproc' => [
-        40 => 'slurf:Nickname',
+        40 => [
+            'class' => 'slurf:Nickname',
+            'assetsbase' => '/system/',
+        ],
     ],
 ```
+
+You can set assetsbase to the base URL where your user avatars are to be found,
+if using the accountchooser functionality.
 
 Configure the Mastodon database in SSP's `config.php` as the `database.*` settings.
 

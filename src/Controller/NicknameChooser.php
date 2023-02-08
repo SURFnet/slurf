@@ -81,7 +81,7 @@ class NicknameChooser
         }
 
         $query = $db->read(
-            "SELECT username, CONCAT('/system/accounts/avatars/', SUBSTRING(id::text, 1, 3), '/',
+            "SELECT username, CONCAT('accounts/avatars/', SUBSTRING(id::text, 1, 3), '/',
              SUBSTRING(id::text, 4, 3), '/',
              SUBSTRING(id::text, 7, 3), '/',
              SUBSTRING(id::text, 10, 3),'/',
@@ -218,6 +218,7 @@ class NicknameChooser
         $t->data['choices'] = $nickchoices;
         $t->data['personalnick'] = $personalnick;
         $t->data['avatars'] = $nickswithavas;
+        $t->data['assetsbase'] = $state['slurf_assetsbase'];
         return $t;
     }
 }
