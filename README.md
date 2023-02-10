@@ -1,5 +1,5 @@
 # slurf
-SimpleSAMLphp authproc for SURFconext/Mastodon integration
+SimpleSAMLphp authproc for more control when using Mastodon with SAML IdP(s).
 
 This is a SimpleSAMLphp module that provides an interface before Mastodon.
 Its intended use is being configured in a SimpleSAMLphp installation (proxy)
