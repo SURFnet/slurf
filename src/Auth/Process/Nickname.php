@@ -84,6 +84,7 @@ class Nickname extends Auth\ProcessingFilter
             // Only a personal nick found? Continue to Mastodon immediately
             if($nick !== null) {
                 $attributes[Slurf::TARGET_ATTRIBUTE] = [$nick];
+                Slurf::cleanupAttributes($attributes);
                 return;
             }
 

@@ -47,7 +47,7 @@ class NicknameChooser
 
     private function validNickname(string $nickname): bool
     {
-        return preg_match('/^[a-z0-9_]{2,30}$/i', $nickname) === 1;
+        return preg_match('/^[a-z0-9_]{2,' . Slurf::ATTRIBUTES_MAXLENGTH . '}$/i', $nickname) === 1;
     }
 
     private function nickExists(string $nickname): bool
@@ -155,6 +155,7 @@ class NicknameChooser
 
                     Logger::info('Nickname chooser - new nickname registered, continue');
                     $state['Attributes'][Slurf::TARGET_ATTRIBUTE] = [$desiredNick];
+                    Slurf::cleanupAttributes($state['Attributes']);
 
                     Auth\ProcessingChain::resumeProcessing($state);
                 }
@@ -169,6 +170,7 @@ class NicknameChooser
         $t->data['desiredNick'] = $desiredNick ?? '';
         $t->data['nickExists'] = $nickExists ?? null;
         $t->data['invalidNickname'] = $nicknameInvalid ?? false;
+        $t->data['maxlength'] = Slurf::ATTRIBUTES_MAXLENGTH;
         return $t;
     }
 
