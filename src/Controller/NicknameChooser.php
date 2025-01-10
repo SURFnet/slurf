@@ -191,13 +191,13 @@ class NicknameChooser
         $nickchoices = $state['slurf_groupnicks'];
         $personalnick = $state['slurf_personalnick'];
         if ($personalnick !== null) {
-            $nickchoices[] = $personalnick;
+            $nickchoices[$personalnick] = 'set';
         }
 
         $proceed = $request->get('proceed', null);
         if ($proceed !== null) {
             Logger::info('Nickname chooser - nickname selected');
-            if(!in_array($proceed, $nickchoices, true)) {
+            if(!array_key_exists($proceed, $nickchoices)) {
                 throw new Error\Exception("Chosen nick is not one of your nicks");
             }
 
@@ -205,6 +205,10 @@ class NicknameChooser
             if($proceed !== $personalnick) {
                 // Only send the nickname on, not (user's personal) attributes for group accounts
                 $state['Attributes'] = [];
+                // Send group email if set
+                if(!empty($nickchoices[$proceed])) {
+                    $state['Attributes'][Slurf::USER_MAIL_ATTRIBUTE] = [$nickchoices[$proceed]];
+                }
             }
             $state['Attributes'][Slurf::TARGET_ATTRIBUTE] = [$proceed];
 
@@ -212,12 +216,12 @@ class NicknameChooser
         }
 
         Logger::info('Account chooser - showing form to user');
-        $nickswithavas = $this->getNicksAvatars($nickchoices);
+        $nickswithavas = $this->getNicksAvatars(array_keys($nickchoices));
 
         $t = new Template($this->config, 'slurf:accountchooser.twig');
         $t->data['target'] = Module::getModuleURL('slurf/chooser');
         $t->data['data'] = ['StateId' => $id];
-        $t->data['choices'] = $nickchoices;
+        $t->data['choices'] = array_keys($nickchoices);
         $t->data['personalnick'] = $personalnick;
         $t->data['avatars'] = $nickswithavas;
         $t->data['assetsbase'] = $state['slurf_assetsbase'];

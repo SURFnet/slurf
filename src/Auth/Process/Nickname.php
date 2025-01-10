@@ -52,11 +52,11 @@ class Nickname extends Auth\ProcessingFilter
         }
 
         $query = $db->read(
-                    "SELECT nickname FROM " . Slurf::DB_TABLE . " WHERE idtype='group' AND saml_id IN ($placeholders)",
+                    "SELECT nickname,email FROM " . Slurf::DB_TABLE . " WHERE idtype='group' AND saml_id IN ($placeholders)",
                     $values
                 );
         $query->execute();
-        return $query->fetchAll(PDO::FETCH_COLUMN);
+        return $query->fetchAll(PDO::FETCH_KEY_PAIR);
     }
 
     public function process(array &$state): void
@@ -92,7 +92,7 @@ class Nickname extends Auth\ProcessingFilter
             $target = 'slurf/nickname';
         } else {
             // If user has group accounts, always continue to account chooser
-            Logger::info(sprintf("Found group nicknames for user %s: [%s]", $nameId, implode(',', $groupnicks)));
+            Logger::info(sprintf("Found group nicknames for user %s: [%s]", $nameId, implode(',', array_keys($groupnicks))));
             $state['slurf_groupnicks'] = $groupnicks;
             $state['slurf_assetsbase'] = $this->assetsbase;
             $target = 'slurf/chooser';

@@ -49,7 +49,8 @@ CREATE TABLE saml2nick (
     nickname character varying(256) DEFAULT ''::character varying NOT NULL,
     idtype public.idtype DEFAULT 'person'::public.idtype NOT NULL,
     saml_id character varying(256) DEFAULT ''::character varying NOT NULL,
-    homeorg character varying(256) DEFAULT ''::character varying NOT NULL
+    homeorg character varying(256) DEFAULT ''::character varying NOT NULL,
+    email character varying(256) DEFAULT ''::character varying NULL
 );
 
 CREATE INDEX index_saml2nick_on_id ON saml2nick USING btree (saml_id, idtype);
@@ -62,13 +63,18 @@ CREATE UNIQUE INDEX index_saml2nick_on_nickname ON saml2nick USING btree (lower(
 By default, the module uses the following attributes:
 
 * To send the nickname to Mastodon: eduPersonNickname
+* The email address of the user: mail
 * The identifier from the IdP: persistent NameID
 * The home org of the user: schacHomeOrganization
 * Group memberships: isMemberOf
 
 The module only looks in its own saml2nick table for available nicknames,
 i.e. it assumtes that is the single source of truth that a nickname is
-available or taken. 
+available or taken.
+
+The saml2nick table can contain an optional email value for group nicks.
+This is the email address for the group that will be sent on to Mastodon
+for this nickname. The field is not used for personal accounts.
 
 # License, contact
 
