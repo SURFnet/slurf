@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 namespace SimpleSAML\Module\slurf;
+use SimpleSAML\Logger;
 
 class Slurf
 {
@@ -20,15 +21,16 @@ class Slurf
         $mail = $attr[Slurf::USER_MAIL_ATTRIBUTE][0] ?? '';
 
         // Mastodon does not accept values for displayname or mail > 30 characters
-	// (will crash on receiving them). But 'randomly' shortening them makes no
-	// sense.
+        // (will crash on receiving them). But 'randomly' shortening them makes no
+        // sense.
 
-	// DisplayName: if too long, set to nickname
+        // DisplayName: if too long, set to nickname
         if(strlen($displayName) > self::ATTRIBUTES_MAXLENGTH) {
             $attr[self::USER_DISPLAYNAME_ATTRIBUTE] = $attr[self::TARGET_ATTRIBUTE];
         }
-	// Mail: if too long, do not send
+        // Mail: if too long, do not send
         if(strlen($mail) > self::ATTRIBUTES_MAXLENGTH) {
+            Logger::notice(sprintf("Email attribute exceeds maximum length (%s), dropping it: %s", self::ATTRIBUTES_MAXLENGTH, $mail));
             unset($attr[self::USER_MAIL_ATTRIBUTE]);
         }
     }
