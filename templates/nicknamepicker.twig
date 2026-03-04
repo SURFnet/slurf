@@ -9,10 +9,10 @@
 {% block content %}
 
 <div class="item">
-<h1>{% trans %}Welcome to Mastodon{% endtrans %}
+<h1>{% trans %}Welcome to the Fediverse!{% endtrans %}
 <h2>{{ pagetitle }}</h2>
 
-<p>{% trans %}To register with Mastodon you need to pick an account name. The account name is your public identity on the Mastodon platform and may contain letters, numbers and underscores. Spaces are not allowed and the name may not be longer than thirty characters.{% endtrans %}</p>
+<p>{% trans %}To register with our Fediverse applications (Mastodon and/or PeerTube) you need to pick an account name. The account name is your public identity on the platform and may contain letters, numbers and underscores, and is usable on SURF Mastodon, PeerTube or both. Spaces are not allowed and the name may not be longer than thirty characters.{% endtrans %}</p>
 
 <p><em>{% trans %}The account name can not be changed afterwards.{% endtrans %}</em></p>
 
@@ -27,7 +27,7 @@
         <div class="message-box message-box-error">{% trans %}The chosen account name is already taken. Please choose another one.{% endtrans %}</div>
     {% endif %}
 
-    <div class="pure-control-group"><input type="text" oninput="checkAvailability(this.value);" size="40" maxlength="{{ maxlength }}" pattern="^[a-zA-Z0-9_]+$" minlength="2" class="edge" required name="nickname" placeholder="{% trans %}Your Mastodon account name{% endtrans %}" autofocus value="{{ desiredNick }}"></div>
+    <div class="pure-control-group"><input type="text" oninput="checkAvailability(this.value);" size="40" maxlength="{{ maxlength }}" pattern="^[a-zA-Z0-9_]+$" minlength="2" class="edge" required name="nickname" placeholder="{% trans %}Your desired Fediverse account name{% endtrans %}" autofocus value="{{ desiredNick }}"></div>
 
     <p><input type="submit" name="proceed" id="proceedbutton" class="pure-button pure-button-red"
         value="{% trans %}Proceed{% endtrans %}"></p>

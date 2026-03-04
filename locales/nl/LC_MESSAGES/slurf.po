@@ -19,20 +19,20 @@ msgstr "Kies een account om verder te gaan"
 msgid "Which account do you want to log into Mastodon with?"
 msgstr "Met welk account wil je op Mastodon inloggen?"
 
-msgid "Welcome to Mastodon"
-msgstr "Welkom bij Mastodon"
+msgid "Welcome to the Fediverse!"
+msgstr "Welkom in het Fediversum!"
 
 msgid "Please choose your public account name"
 msgstr "Kies een naam voor je account"
 
-msgid "To register with Mastodon you need to pick an account name. The account name is your public identity on the Mastodon platform and may contain letters, numbers and underscores. Spaces are not allowed and the name may not be longer than thirty characters."
-msgstr "Om je aan te melden voor Mastodon moet je een accountnaam kiezen. De accountnaam is je publieke identiteit op het Mastodon-platform en bestaat uit letters, cijfers en underscores. Hij mag geen spaties bevatten en niet langer zijn dan dertig tekens."
+msgid "To register with our Fediverse applications (Mastodon and/or PeerTube) you need to pick an account name. The account name is your public identity on the platform and may contain letters, numbers and underscores, and is usable on SURF Mastodon, PeerTube or both. Spaces are not allowed and the name may not be longer than thirty characters."
+msgstr "Om je aan te melden voor onze Fediverse-applicaties (Mastodon en/of PeerTube) moet je een accountnaam kiezen. De accountnaam is je publieke identiteit op het platform en bestaat uit letters, cijfers en underscores. Deze is bruikbaar op SURF Mastodon, PeerTube of beide. Hij mag geen spaties bevatten en niet langer zijn dan dertig tekens."
 
 msgid "The account name can not be changed afterwards."
 msgstr "De accountnaam kan niet later nog gewijzigd worden."
 
-msgid "Your Mastodon account name"
-msgstr "Je Mastodon-accountnaam"
+msgid "Your desired Fediverse account name"
+msgstr "Je gewenste Fediverse-accountnaam"
 
 msgid "Proceed"
 msgstr "Verder"
