@@ -87,7 +87,9 @@ class NicknameChooser
              SUBSTRING(id::text, 10, 3),'/',
              SUBSTRING(id::text, 13, 3),'/',
              SUBSTRING(id::text, 16, 3),'/original/', avatar_file_name) AS avatar_uri
-             FROM accounts WHERE lower(username) IN ($placeholders) AND domain IS NULL",
+             FROM accounts
+             WHERE avatar_file_name IS NOT NULL
+             AND lower(username) IN ($placeholders) AND domain IS NULL",
              $values
                 );
         $query->execute();
