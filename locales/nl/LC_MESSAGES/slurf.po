@@ -16,8 +16,8 @@ msgstr ""
 msgid "Select an account to continue"
 msgstr "Kies een account om verder te gaan"
 
-msgid "Which account do you want to log into Mastodon with?"
-msgstr "Met welk account wil je op Mastodon inloggen?"
+msgid "Which account do you want to log in with?"
+msgstr "Met welk account wil je inloggen?"
 
 msgid "Welcome to the Fediverse!"
 msgstr "Welkom in het Fediversum!"
